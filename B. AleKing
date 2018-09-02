@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+	int N,*M,a,i,j,aux;
+	scanf("%i",&N);
+	M=(int*)malloc(N*sizeof(int));
+	for(i=0;i<N;i++){
+		scanf("%i",&M[i]);		
+	}
+	scanf("%i",&a);
+	switch(a){
+	case 1:
+		for(i=N-1;i>=0;i--){
+		printf("%d ",M[i]);
+	    }
+	    break;
+	case 2:
+		for(i=0;i<N;i++){
+		printf("%d ",M[i]);
+	    }
+		break;
+	case 3:
+		for(i=0;i<N;i++){
+		j = i;
+		aux = M[j];
+		while(j>0 && aux<M[j-1]){
+			M[j]=M[j-1];
+			j--;
+		}
+		M[j] = aux;
+	    }
+	    for(i=N-1;i>=0;i--){
+		printf("%d ",M[i]);
+	    }
+		break;
+	default:
+		break;
+	}
+	return 0;
+}
