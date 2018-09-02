@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+typedef struct nodo Nodo;
+typedef Nodo *pelemento;
+struct nodo{
+	int dato;
+	pelemento siguiente;
+};
+typedef struct listadoble List;
+struct listadoble{
+	pelemento inicio;
+	pelemento final;
+};
+void insertar(List *lista1,int dato);
+void visualizarVista(List lista);
+int pila(List *lista);
+int cola(List *lista);
+pelemento nuevoElemento();
+pelemento inicio=NULL;
+pelemento final=NULL;
+int main(){
+    int N,dato,a;
+    char opcion[12],palabra[]="meter datos";
+    List Pila,Cola;
+    Pila.inicio=Cola.inicio=NULL;
+    Pila.final=Cola.final=NULL;
+    scanf("%i",&N);
+    while(N!=0){
+    	fflush(stdin);
+    	scanf("%[^\n]",&opcion);
+    	if(strcmp(opcion,palabra)){
+    			if(Cola.inicio!=NULL && Pila.inicio!=NULL){
+    				printf("%i %i\n",pila(&Pila),cola(&Cola));
+				}
+    			N--;
+		}else{
+			scanf("%i",&dato);
+    			insertar(&Pila,dato);
+    			insertar(&Cola,dato);
+    			N--;
+		}
+	}
+}
+void insertar(List*lista,int dato){
+	pelemento nuevo=nuevoElemento();
+	nuevo->dato=dato;
+	nuevo->siguiente=NULL;
+	if(lista->inicio==NULL && lista->final==NULL){
+		lista->inicio=nuevo;
+		lista->final=nuevo;
+	}else{
+		nuevo->siguiente=lista->inicio;
+		lista->inicio=nuevo;
+	}
+}
+
+int pila(List *lista){
+	if(lista->inicio!=NULL && lista->final!=NULL){
+		int dato=lista->inicio->dato;
+	if(lista->inicio->siguiente!=NULL){
+		lista->inicio=lista->inicio->siguiente;
+	}else{
+		lista->inicio=NULL;
+		lista->final=NULL;
+	}
+	return dato;
+	}
+}
+int cola(List *lista){
+	if(lista->inicio!=NULL && lista->final!=NULL){
+		int dato=lista->final->dato;
+    	if(lista->inicio->siguiente!=NULL){
+		pelemento aux=lista->inicio;
+		while(aux->siguiente!=lista->final){
+		aux=aux->siguiente;
+    	}
+    	lista->final=aux;
+    	lista->final->siguiente=NULL;
+        }else{
+		lista->inicio=NULL;
+		lista->final=NULL;
+	    }
+	    return dato;
+	}
+}
+
+pelemento nuevoElemento(){
+	pelemento q=(pelemento)malloc(sizeof(Nodo));
+	return q;
+}
+
+void visualizarVista(List nlista){
+	if(nlista.inicio!=NULL){
+		pelemento aux=nlista.inicio;
+		while(aux!=NULL){
+			printf("%i ",aux->dato);
+			aux=aux->siguiente;
+		}
+    }
+}
