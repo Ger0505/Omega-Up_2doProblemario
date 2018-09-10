@@ -1,0 +1,117 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+typedef struct nodo Nodo;
+typedef Nodo *pelemento;
+struct nodo{
+	int dato;
+	pelemento siguiente;
+	pelemento anterior;
+};
+typedef struct listadoble ListDob;
+struct listadoble{
+	pelemento inicio;
+	pelemento final;
+};
+void insertarPaget(ListDob*lista,int dato);
+void insertarAJ(ListDob*lista,int dato);
+int PrimerPaget(ListDob*lista);
+int MayorAJ(ListDob*lista);
+pelemento nuevoElemento();
+pelemento inicio=NULL;
+pelemento final=NULL;
+int main(){
+	ListDob Lista1,Lista2;
+	Lista1.inicio=Lista2.inicio=NULL;
+	Lista1.final=Lista2.final=NULL;
+	int N,x;
+	char A;
+	do{
+		scanf("%i",&N);
+	}while(N<1 | N>100000);
+		while(N!=0){
+			scanf("%c",&A);
+		switch(A){
+			case 'I':
+				do{
+					scanf("%i",&x);
+				}while(x<-pow(10,12) | x>pow(10,12));
+				insertarPaget(&Lista1,x);
+				insertarAJ(&Lista2,x);
+				N--;
+				break;
+			case 'Q':
+				if(Lista1.inicio==NULL | Lista2.inicio==NULL){
+					printf("MARIOLA NO!\n");
+				}else{
+				printf("%i\n",abs(PrimerPaget(&Lista1)-MayorAJ(&Lista2)));
+				}
+				N--;
+				break;
+		}
+	}
+}
+void insertarPaget(ListDob*lista,int dato){
+	pelemento p=nuevoElemento();
+	p->anterior=NULL;
+	p->siguiente=NULL;
+	p->dato=dato;
+	if(lista->inicio==NULL && lista->final==NULL){
+		lista->inicio=p;
+		lista->final=p;
+	}else{
+		p->anterior=lista->final;
+		lista->final->siguiente=p;
+		lista->final=p;
+	}
+}
+
+void insertarAJ(ListDob*lista,int dato){
+	pelemento p=nuevoElemento();
+	p->anterior=NULL;
+	p->siguiente=NULL;
+	p->dato=dato;
+	if(lista->inicio==NULL && lista->final==NULL){
+		lista->inicio=p;
+		lista->final=p;
+	}else{
+		p->siguiente=lista->inicio;
+		lista->inicio->anterior=p;
+		lista->inicio=p;
+	}
+}
+int PrimerPaget(ListDob*lista){
+	int aux=lista->inicio->dato;
+	lista->inicio=lista->inicio->siguiente;
+	lista->inicio->anterior=NULL;
+	return aux;
+}
+int MayorAJ(ListDob*lista){
+	int dato;
+	pelemento aux=lista->inicio;
+	pelemento max=lista->inicio;
+	while(aux!=NULL){
+		if((aux->dato)>(max->dato)){
+			max=aux;
+		}
+		aux=aux->siguiente;
+	}
+	dato=max->dato;
+	if(max==lista->inicio){
+		lista->inicio=lista->inicio->siguiente;
+		lista->inicio->anterior=NULL;
+	}else if(max==lista->final){
+		lista->final=lista->final->anterior;
+		lista->final->siguiente=NULL;	
+	}else{
+		pelemento aux1=max->anterior,aux2=max->siguiente;
+		aux1->siguiente=aux2;
+		aux2->anterior=aux1;
+		free(aux);
+	}
+	return dato;
+}
+pelemento nuevoElemento(){
+	pelemento q=(pelemento)malloc(sizeof(Nodo));
+	return q;
+}
