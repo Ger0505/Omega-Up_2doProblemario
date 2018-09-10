@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define Nodo struct nodo
+#define List struct lista
+
+Nodo{
+	int dato;
+	char nombre[8];
+	Nodo*siguiente;
+};
+
+List{
+	Nodo*inicio;
+	Nodo*final;
+};
+Nodo*inicio=NULL;
+Nodo*final=NULL;
+void insertNodo(List*lista);
+Nodo*nuevoElemento(int dato);
+Nodo*buscarMayor(List*lista);
+Nodo*buscarMenor(List*lista);
+
+int main(){
+	List Group1,Group2;
+	Group1.inicio=Group1.final=NULL;
+	Group2.inicio=Group2.final=NULL;
+	int n,i,j;
+	do{
+		scanf("%i",&n);
+	}while(n<2 | n>9);
+	for(i=0;i<n;i++){
+		insertNodo(&Group1);
+	}
+	do{
+		scanf("%i",&n);
+	}while(n<2 | n>9);
+	for(i=0;i<n;i++){
+		insertNodo(&Group2);
+	}
+	printf("%s took clay from %s\n",buscarMayor(&Group1)->nombre,buscarMenor(&Group1)->nombre);
+	printf("%s took clay from %s",buscarMayor(&Group2)->nombre,buscarMenor(&Group2)->nombre);
+}
+
+void insertNodo(List*lista){
+	int suma=1,i,num;
+	for(i=0;i<3;i++){
+		scanf("%i",&num);
+		suma*=num;
+	}
+	Nodo*nuevo=nuevoElemento(suma);
+	if(lista->inicio==NULL){
+		lista->inicio=nuevo;
+	}else{
+		nuevo->siguiente=lista->inicio;
+		lista->inicio=nuevo;
+	}
+}
+
+Nodo*nuevoElemento(int dato){
+	char nombre[8];
+	int len;
+	Nodo*q=(Nodo*)malloc(sizeof(Nodo));
+	q->dato=dato;
+	q->siguiente=NULL;
+	fflush(stdin);
+	do{
+		scanf("%s",&q->nombre);
+		len=strlen(q->nombre);
+	}while(len>8);
+	return q;
+}
+
+Nodo*buscarMayor(List*lista){
+	Nodo*max;
+	if(lista->inicio!=NULL){
+		Nodo*aux=lista->inicio;
+		max=lista->inicio;
+			while(aux!=NULL){
+				if(aux->dato>max->dato){
+					max=aux;
+				}
+				aux=aux->siguiente;
+			}
+	}
+	return max;
+}
+Nodo*buscarMenor(List*lista){
+	Nodo*min;
+	if(lista->inicio!=NULL){
+		Nodo*aux=lista->inicio;
+		min=lista->inicio;
+			while(aux!=NULL){
+				if(aux->dato<min->dato){
+					min=aux;
+				}
+				aux=aux->siguiente;
+			}
+	}
+	return min;
+}
